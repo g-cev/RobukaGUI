@@ -165,6 +165,7 @@ def main():
                     clear_pressed = False
 
                 if export_box.collidepoint(mouse_pos):
+                    print("export clicked")
                     for command in command_list:
                         if command == 0:
                             track.append(rest)
