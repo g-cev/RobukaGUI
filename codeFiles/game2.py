@@ -10,8 +10,6 @@ GREEN = (117, 223, 25)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Robuka GUI Backend")
-icon = pygame.image.load("images/Stevens_Ducks.svg")
-pygame.display.set_icon(icon)
 
 GPIO.setmode(GPIO.BCM)
 servo_pin = 18  # whichever GPIO pin is being used

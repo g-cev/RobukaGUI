@@ -10,8 +10,6 @@ GREEN = (117, 223, 25)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Robuka GUI Backend")
-icon = pygame.image.load("images/Stevens_Ducks.svg")
-pygame.display.set_icon(icon)
 
 GPIO.setmode(GPIO.BCM)
 servo_pin = 18  # whichever GPIO pin is being used
@@ -56,13 +54,11 @@ def boxToggle(box_clicked, box_num, command_list):
     box_clicked = not box_clicked
     if box_clicked:
         command_list.append(90)
-        box_color = GREEN
         print(f"{box_num} clicked")
     else:
         command_list.append(0)
-        box_color = RED
         print(f"{box_num} rest")
-    return box_clicked, box_color, command_list
+    return box_clicked
 
 def main():
     pygame.init()
@@ -92,31 +88,18 @@ def main():
 
                 if box1.collidepoint(mouse_pos):
                     # toggle box_clicked
-                    box1_clicked, box1_color, command_list = boxToggle(box1_clicked, 1, command_list)
-
+                    box1_clicked = boxToggle(box1_clicked, 1, command_list)
                 if box2.collidepoint(mouse_pos):
-                    box2_clicked = not box2_clicked
-                    if box2_clicked:
-                        box2_color = GREEN
-                        command_list.append(90)
-                    else:
-                        box2_color = RED
-                        command_list.append(0)
-
+                    box2_clicked = boxToggle(box2_clicked, 2, command_list)        
                 if box3.collidepoint(mouse_pos):
-                    box3_clicked = not box3_clicked
-                    if box3_clicked:
-                        box3_color = GREEN
-                        command_list.append(90)
-                    else:
-                        box3_color = RED
-                        command_list.append(0)
+                    box3_clicked = boxToggle(box3_clicked, 3, command_list)
 
-        controlMotor(command_list)
-        
         box1 = drawBox(box1_color, x_pos, y_pos)
         box2 = drawBox(box2_color, x_pos + 100, y_pos)
         box3 = drawBox(box3_color, x_pos + 200, y_pos)
+
+        for command in command_list:
+            controlMotor(command_list)
 
         command_list = []
 
