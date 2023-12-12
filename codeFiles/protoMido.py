@@ -33,6 +33,9 @@ def set_angle(angle):
 
 def controlMotor(command_list):
     pwm.start(0)  # Start PWM with a duty cycle of 0 (neutral position)
+    start_time = pygame.time.get_ticks()
+    rotate_time = 0
+
     for command in command_list:
         if command == 0:
             # print("REST")
@@ -40,10 +43,19 @@ def controlMotor(command_list):
         elif command == 90:
             # print("GO")
             pwm.ChangeDutyCycle(50)
-            for _ in range(8):  # Rotate four times for 90 degrees each
+            current_time = pygame.time.get_ticks()
+
+            if current_time - rotate_time >= 50:
+                rotate_time = current_time
                 set_angle(90)
-                time.sleep(0.1)
-        time.sleep(0.5)
+
+            # for _ in range(8):  # Rotate four times for 90 degrees each
+                # set_angle(90)
+                # time.sleep(0.1)
+        # time.sleep(0.5)
+    while pygame.time.get_ticks() - start_time < 500:
+        pass
+    pwm.ChangeDutyCycle(0)
 
 def drawBox(box_color, x_pos, y_pos):
     box_width = 50
