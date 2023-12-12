@@ -23,11 +23,16 @@ servo_pin = 18  # whichever GPIO pin is being used
 GPIO.setup(servo_pin, GPIO.OUT)
 pwm = GPIO.PWM(servo_pin, 50)  # 50 Hz frequency for PWM
 
-def set_angle(angle):
+def set_angle(angle, duration):
     duty = angle / 18 + 2  # Convert angle to duty cycle (0.0 to 100.0)
     GPIO.output(servo_pin, True)
     pwm.ChangeDutyCycle(duty)
     # time.sleep(1)  # Adjust this sleep time as needed
+
+    start_time = pygame.time.get_ticks()
+    while pygame.time.get_ticks() - start_time < duration:
+        pass
+
     GPIO.output(servo_pin, False)
     pwm.ChangeDutyCycle(0)
 
@@ -47,12 +52,8 @@ def controlMotor(command_list):
 
             if current_time - rotate_time >= 50:
                 rotate_time = current_time
-                set_angle(90)
+                set_angle(90, 1000) # 1000ms = 1s
 
-            # for _ in range(8):  # Rotate four times for 90 degrees each
-                # set_angle(90)
-                # time.sleep(0.1)
-        # time.sleep(0.5)
     while pygame.time.get_ticks() - start_time < 500:
         pass
     pwm.ChangeDutyCycle(0)
