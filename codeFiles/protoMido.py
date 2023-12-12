@@ -43,23 +43,7 @@ def controlMotor(command_list):
 
     for command in command_list:
         if command == 0:
-            # print("REST")
-            if not rest_flag:
-                rest_flag = True
-                rest_start_time = pygame.time.get_ticks()
-            current_time = pygame.time.get_ticks()
-
-            # Oscillate between 45 and 135 degrees for rest command
-            if (current_time - rest_start_time) < rest_time:
-                if (current_time - rotate_time) >= 50:
-                    rotate_time = current_time
-                    if pwm.get_duty_cycle() == 0:
-                        set_angle(135, 500)
-                    else:
-                        set_angle(45, 500)
-            else:
-                rest_flag = False
-                pwm.ChangeDutyCycle(0)  # Set back to neutral position
+            pwm.ChangeDutyCycle(0)  # Set back to neutral position
         elif command == 90:
             # print("GO")
             pwm.ChangeDutyCycle(50)
